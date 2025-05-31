@@ -1,8 +1,6 @@
 package com.dellamas.starter;
 
-import io.vertx.core.Future;
-import io.vertx.core.VerticleBase;
-
+// Importações principais do Vert.x
 import io.vertx.core.Future;
 import io.vertx.core.VerticleBase;
 import io.vertx.core.MultiMap;
@@ -13,17 +11,23 @@ public class MainVerticle extends VerticleBase {
 
   @Override
   public Future<?> start() {
-    // Create a Router
+    // Criamos o roteador principal da aplicação.
+    // Ele será responsável por interceptar e encaminhar as requisições HTTP para os handlers apropriados.
     Router router = Router.router(vertx);
 
-    // Mount the handler for all incoming requests at every path and HTTP method
+    // Aqui estamos definindo um handler genérico para qualquer rota, em qualquer método HTTP (GET, POST, etc).
+    // Este será chamado sempre que uma requisição for recebida.
     router.route().handler(context -> {
-      // Get the address of the request
+      // Obtemos o endereço remoto de quem fez a requisição (ex: IP do cliente).
       String address = context.request().connection().remoteAddress().toString();
-      // Get the query parameter "name"
+
+      // Capturamos os parâmetros da query string da requisição (ex: ?name=luis).
       MultiMap queryParams = context.queryParams();
+
+      // Se existir um parâmetro chamado "name", usamos ele. Caso contrário, usamos "desconhecido".
       String name = queryParams.contains("name") ? queryParams.get("name") : "desconhecido";
-      // Write a json response
+
+      // Respondemos à requisição com um JSON contendo nome, endereço e uma mensagem personalizada.
       context.json(
         new JsonObject()
           .put("name", name)
@@ -32,18 +36,17 @@ public class MainVerticle extends VerticleBase {
       );
     });
 
-    // Create the HTTP server
+    // Criamos um servidor HTTP na porta 8888.
+    // A cada requisição recebida, ela será tratada pelo router definido acima.
     return vertx.createHttpServer()
-      // Handle every request using the router
-      .requestHandler(router)
-      // Start listening
-      .listen(8888)
-      // Print the port on success
+      .requestHandler(router) // define o roteador como handler principal
+      .listen(8888) // inicia o servidor na porta 8888
       .onSuccess(server -> {
+        // Se o servidor iniciar com sucesso, mostramos a porta no console.
         System.out.println("HTTP server started on port " + server.actualPort());
       })
-      // Print the problem on failure
       .onFailure(throwable -> {
+        // Se algo der errado, mostramos o erro no console.
         throwable.printStackTrace();
       });
   }
