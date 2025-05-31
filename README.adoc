@@ -1,0 +1,63 @@
+
+= Starter
+
+image:https://img.shields.io/badge/vert.x-5.0.0-purple.svg[link="https://vertx.io"]
+
+Primeiros testes usando Vert.x
+
+== Construção
+
+Para executar seus testes:
+```
+./mvnw clean test
+```
+
+Para empacotar sua aplicação:
+```
+./mvnw clean package
+```
+
+Para executar sua aplicação:
+```
+./mvnw clean compile exec:java
+```
+
+== Exemplos de Chamada
+
+Após iniciar o servidor HTTP, ele estará escutando na porta `8888`. Você pode fazer chamadas para o endpoint usando ferramentas como `curl`, navegadores ou clientes HTTP.
+
+Exemplo de chamada com `curl`:
+```
+curl "http://localhost:8888/?name=Naruto"
+```
+
+Resposta esperada:
+```json
+{
+"name": "Naruto",
+"address": "127.0.0.1:XXXXX",
+"message": "Olá Naruto conectado de 127.0.0.1:XXXXX"
+}
+```
+
+Se o parâmetro `name` não for fornecido:
+```
+curl "http://localhost:8888/"
+```
+
+Resposta esperada:
+```json
+{
+"name": "desconhecido",
+"address": "127.0.0.1:XXXXX",
+"message": "Olá desconhecido conectado de 127.0.0.1:XXXXX"
+}
+```
+
+== Ajuda
+
+* https://vertx.io/docs/[Documentação do Vert.x]
+* https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x no Stack Overflow]
+* https://groups.google.com/forum/?fromgroups#!forum/vertx[Grupo de Usuários do Vert.x]
+* https://discord.gg/6ry7aqPWXy[Discord do Vert.x]
+```
